@@ -6,6 +6,7 @@
 
 #include "token.hpp"
 #include "ast_node.hpp"
+#include "../logger/logger.hpp"
 
 class Parser {
 public:

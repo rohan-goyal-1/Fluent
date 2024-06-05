@@ -12,6 +12,7 @@ std::vector<Token> Lexer::tokenize () {
 
         if (isComment(currentChar)) {
             skipComment();
+            continue;
         }
 
         if (std::isspace(currentChar)) {
@@ -70,7 +71,7 @@ void Lexer::skipComment () {
     if (isMultiLineComment(currentChar)) {
         position++;
         currentChar = input[position];
-        while (position < input.size() && isMultiLineComment(currentChar)) {
+        while (position < input.size() && !isMultiLineComment(currentChar)) {
             position++;
             currentChar = input[position];
         }

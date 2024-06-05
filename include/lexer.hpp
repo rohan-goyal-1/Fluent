@@ -5,6 +5,7 @@
 #include <iostream>
 
 #include "token.hpp"
+#include "../logger/logger.hpp"
 
 class Lexer {
 public:
