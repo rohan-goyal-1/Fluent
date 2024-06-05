@@ -8,6 +8,7 @@
 #include "token.hpp"
 #include "lexer.hpp"
 #include "parser.hpp"
+#include "ast_node.hpp"
 #include "../logger/logger.hpp"
 
 class Interpreter {

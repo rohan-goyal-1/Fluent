@@ -22,15 +22,14 @@ private:
     Token peek();
     Token previous();
     Token advance();
-    bool match(TokenType type);
     bool check(TokenType type);
 
     std::shared_ptr<ASTNode> parseDeclaration();
+    std::shared_ptr<ASTNode> parseConditional();
     std::shared_ptr<ASTNode> parsePrint();
     std::shared_ptr<ASTNode> parseExpression();
     std::shared_ptr<ASTNode> parseTerm();
     std::shared_ptr<ASTNode> parseFactor();
     std::shared_ptr<ASTNode> parsePrimary();
-    std::shared_ptr<ASTNode> parseUnary();
 };
 

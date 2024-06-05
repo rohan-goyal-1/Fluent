@@ -4,12 +4,16 @@
 #include <map>
 
 enum class TokenType {
-    Keyword,
+    Type,
+    Print,
     Identifier,
     Number,
+    String,
     Operator,
     Punctuation,
-    EndOfFile
+    EndOfFile,
+    If,
+    Else
 };
 
 extern std::map<TokenType, std::string> tokenNames;

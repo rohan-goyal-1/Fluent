@@ -18,12 +18,15 @@ private:
 
     bool isOperator(char ch);
 
+    bool isString(char ch);
+
     bool isPunctuation(char ch);
 
     Token tokenizeIdentifierOrKeyword();
     Token tokenizeNumber();
     Token tokenizeOperator();
     Token tokenizePunctuation();
+    Token tokenizeString();
 
     bool isComment(char ch);
     bool isSingleLineComment(char ch);

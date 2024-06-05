@@ -8,16 +8,20 @@ Parser::Parser (std::vector<Token> &tokens) {
 std::shared_ptr<ASTNode> Parser::parse () {
     auto program = std::make_shared<ASTNode>(ASTNodeType::Program);
     while (!isAtEnd()) {
-        if (match(TokenType::Keyword)) {
-            if (previous().value == "int") {
-                program->children.push_back(parseDeclaration());
-            } 
-            else if (previous().value == "print") {
-                program->children.push_back(parsePrint());
-            }
+        if (check(TokenType::Type)) {
+            advance();
+            program->children.push_back(parseDeclaration());
         } 
+        else if (check(TokenType::Print)) {
+            advance();
+            program->children.push_back(parsePrint());
+        }
+        else if (check(TokenType::If)) {
+            advance();
+            program->children.push_back(parseConditional());
+        }
         else {
-            throw std::runtime_error("Unexpected token: " + previous().value);
+            throw std::runtime_error("Unexpected token: " + peek().value);
         }
     }
     return program;
@@ -42,14 +46,6 @@ Token Parser::advance () {
     return previous();
 }
 
-bool Parser::match (TokenType type) {
-    if (check(type)) {
-        advance();
-        return true;
-    }
-    return false;
-}
-
 bool Parser::check (TokenType type) {
     if (isAtEnd()) {
         return false;
@@ -57,43 +53,54 @@ bool Parser::check (TokenType type) {
     return peek().type == type;
 }
 
+std::shared_ptr<ASTNode> Parser::parseConditional () {
+    auto conditional = std::make_shared<ASTNode>(ASTNodeType::Conditional);
+    return nullptr;
+}
+
 std::shared_ptr<ASTNode> Parser::parseDeclaration () {
     auto declaration = std::make_shared<ASTNode>(ASTNodeType::Declaration);
-    if (!match(TokenType::Identifier)) {
-        throw std::runtime_error("Expected identifier after 'int'");
+    if (!check(TokenType::Identifier)) {
+        throw std::runtime_error("Expected identifier after " + previous().value);
     }
-    declaration->value = previous().value;
+    declaration->value = peek().value;
+    advance();
 
-    if (!match(TokenType::Operator) || previous().value != "=") {
+    if (!check(TokenType::Operator) || peek().value != "=") {
         throw std::runtime_error("Expected '=' after identifier");
     }
 
+    advance();
     declaration->children.push_back(parseExpression());
-    if (!match(TokenType::Punctuation) || previous().value != ";") {
+    if (!check(TokenType::Punctuation) || peek().value != ";") {
         // std::cout << "______\n";
         // std::cout << previous().value << "\n";
         // std::cout << astNames[declaration->children[0]->type] + " " + declaration->children[0]->value + "\n";
         // std::cout << astNames[declaration->type] + " " + declaration->value + "\n";
         throw std::runtime_error("Expected ';' after expression");
     }
+    advance();
 
     return declaration;
 }
 
 std::shared_ptr<ASTNode> Parser::parsePrint () {
     auto printStmt = std::make_shared<ASTNode>(ASTNodeType::Print);
-    if (!match(TokenType::Punctuation) || previous().value != "(") {
+    if (!check(TokenType::Punctuation) || peek().value != "(") {
         throw std::runtime_error("Expected '(' after 'print'");
     }
 
+    advance();
     printStmt->children.push_back(parseExpression());
 
-    if (!match(TokenType::Punctuation) || previous().value != ")") {
+    if (!check(TokenType::Punctuation) || peek().value != ")") {
         throw std::runtime_error("Expected ')' after expression");
     }
-    if (!match(TokenType::Punctuation) || previous().value != ";") {
+    advance();
+    if (!check(TokenType::Punctuation) || peek().value != ";") {
         throw std::runtime_error("Expected ';' after ')'");
     }
+    advance();
 
     return printStmt;
 }
@@ -142,9 +149,10 @@ std::shared_ptr<ASTNode> Parser::parsePrimary () {
     else if (check(TokenType::Punctuation) && peek().value == "(") {
         advance();
         auto exprNode = parseExpression();
-        if (!match(TokenType::Punctuation) || previous().value != ")") {
+        if (!check(TokenType::Punctuation) || peek().value != ")") {
             throw std::runtime_error("Expected ')' after expression");
         }
+        advance();
         return exprNode;
     } 
     else {

@@ -2,6 +2,7 @@
 
 #include <string>
 #include <vector>
+#include <map>
 
 enum class ASTNodeType {
     Program,
@@ -11,7 +12,9 @@ enum class ASTNodeType {
     BinaryExpression,
     Identifier,
     Number,
-    BinaryOperation
+    BinaryOperation,
+    BooleanOperation,
+    Conditional
 };
 
 extern std::map<ASTNodeType, std::string> astNames;

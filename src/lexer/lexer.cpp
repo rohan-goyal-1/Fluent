@@ -30,6 +30,11 @@ std::vector<Token> Lexer::tokenize () {
             continue;
         }
 
+        if (isString(currentChar)) {
+            tokens.push_back(tokenizeString());
+            continue;
+        }
+
         if (isOperator(currentChar)) {
             tokens.push_back(tokenizeOperator());
             continue;
@@ -46,16 +51,20 @@ std::vector<Token> Lexer::tokenize () {
     return tokens;
 }
 
-bool Lexer::isSingleLineComment (char c) {
-    return c == '#';
+bool Lexer::isString (char ch) {
+    return ch == '"';
 }
 
-bool Lexer::isMultiLineComment (char c) {
-    return c == '~';
+bool Lexer::isSingleLineComment (char ch) {
+    return ch == '#';
 }
 
-bool Lexer::isComment (char c) {
-    return isSingleLineComment(c) || isMultiLineComment(c);
+bool Lexer::isMultiLineComment (char ch) {
+    return ch == '~';
+}
+
+bool Lexer::isComment (char ch) {
+    return isSingleLineComment(ch) || isMultiLineComment(ch);
 }
 
 bool Lexer::isOperator (char ch) {
@@ -94,10 +103,21 @@ Token Lexer::tokenizeIdentifierOrKeyword () {
         position++;
     }
     std::string value = input.substr(start, position - start);
-    if (value == "int" || value == "print") {
-        return {TokenType::Keyword, value};
+    if (value == "int" || value == "string") {
+        return {TokenType::Type, value};
     }
-    return {TokenType::Identifier, value};
+    else if (value == "print") {
+        return {TokenType::Print, value};
+    }
+    else if (value == "if") {
+        return {TokenType::If, value};
+    }
+    else if (value == "else") {
+        return {TokenType::Else, value};
+    }
+    else  {
+        return {TokenType::Identifier, value};
+    }
 }
 
 Token Lexer::tokenizeNumber () {
@@ -109,15 +129,28 @@ Token Lexer::tokenizeNumber () {
     return {TokenType::Number, value};
 }
 
-Token Lexer::tokenizeOperator() {
+Token Lexer::tokenizeOperator () {
     char currentChar = input[position];
     position++;
     return {TokenType::Operator, std::string(1, currentChar)};
 }
 
-Token Lexer::tokenizePunctuation() {
+Token Lexer::tokenizePunctuation () {
     char currentChar = input[position];
     position++;
     return {TokenType::Punctuation, std::string(1, currentChar)};
 }
 
+Token Lexer::tokenizeString () {
+    position++;
+    size_t start = position;
+    while (position < input.size() && input[position] != '"') {
+        position++;
+    }
+    if (input[position] != '"') {
+        throw std::runtime_error("Missing matching \"." );
+    }
+    std::string value = input.substr(start, position - start);
+
+    return {TokenType::String, value};
+}

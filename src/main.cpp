@@ -12,17 +12,21 @@ std::map<ASTNodeType, std::string> astNames = {
 };
 
 std::map<TokenType, std::string> tokenNames = {
-    {TokenType::Keyword, "Keyword"},
+    {TokenType::Type, "Type"},
+    {TokenType::Print, "Print"},
     {TokenType::Identifier, "Identifier"},
     {TokenType::Number, "Number"},
+    {TokenType::String, "String"},
     {TokenType::Operator, "Operator"},
     {TokenType::Punctuation, "Punctuation"},
-    {TokenType::EndOfFile, "EndOfFile"}
+    {TokenType::EndOfFile, "EndOfFile"},
+    {TokenType::If, "If"},
+    {TokenType::Else, "Else"}
 };
 
 int main (int argc, char** argv) {
     if (argc != 2) {
-        std::cout << "Wrong amount of arguments.\n";
+        std::cerr << "Wrong amount of arguments.\n";
         return 1;
     }
 
@@ -41,7 +45,7 @@ int main (int argc, char** argv) {
         interpreter.interpret();
     }
     catch (std::string error) {
-        std::cout << error << '\n';
+        std::cerr << error << '\n';
         return 1;
     }
 

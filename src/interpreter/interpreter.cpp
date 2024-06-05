@@ -1,5 +1,4 @@
 #include "../include/interpreter.hpp"
-#include "../include/ast_node.hpp"
 
 Interpreter::Interpreter (std::string lines) {
     this->lines = lines;
@@ -44,17 +43,17 @@ void Interpreter::executeProgram (std::shared_ptr<ASTNode>& node) {
     }
 }
 void Interpreter::executeStatement (std::shared_ptr<ASTNode>& node) {
-        switch (node->type) {
-            case ASTNodeType::Declaration:
-                executeDeclaration(node);
-                break;
-            case ASTNodeType::Print:
-                executePrint(node);
-                break;
-            default:
-                throw std::runtime_error("Unexpected AST node type for statement execution");
-        }
+    switch (node->type) {
+        case ASTNodeType::Declaration:
+            executeDeclaration(node);
+            break;
+        case ASTNodeType::Print:
+            executePrint(node);
+            break;
+        default:
+            throw std::runtime_error("Unexpected AST node type for statement execution");
     }
+}
 
 void Interpreter::executeDeclaration (std::shared_ptr<ASTNode>& node) {
     if (node->children.size() != 1) throw std::runtime_error("Invalid declaration node");
