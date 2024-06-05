@@ -1,0 +1,8 @@
+# this is a single line comment
+~
+this is a multi-line comment
+~
+int x = 10;
+int y = (x*2) + 5 + x + 2 * x;
+print(x);
+print(y);

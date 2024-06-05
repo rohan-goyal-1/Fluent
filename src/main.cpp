@@ -1,4 +1,4 @@
-#include "main.hpp"
+#include "../include/main.hpp"
 
 std::map<ASTNodeType, std::string> astNames = {
     {ASTNodeType::Program, "Program"},

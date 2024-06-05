@@ -1,0 +1,11 @@
+~
+returns the sum
+~
+func function (int a, float b): int {
+    give a + b;
+}
+
+# check if greater that zero
+if (function(10, 1.0) > 0) {
+    print("IT WORKED");
+}

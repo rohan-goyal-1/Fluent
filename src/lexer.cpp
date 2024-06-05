@@ -1,4 +1,4 @@
-#include "lexer.hpp"
+#include "../include/lexer.hpp"
 
 Lexer::Lexer (std::string &input) { 
     this->input = input;
@@ -9,6 +9,10 @@ std::vector<Token> Lexer::tokenize () {
     std::vector<Token> tokens;
     while (position < input.size()) {
         char currentChar = input[position];
+
+        if (isComment(currentChar)) {
+            skipComment();
+        }
 
         if (std::isspace(currentChar)) {
             position++;
@@ -41,12 +45,46 @@ std::vector<Token> Lexer::tokenize () {
     return tokens;
 }
 
+bool Lexer::isSingleLineComment (char c) {
+    return c == '#';
+}
+
+bool Lexer::isMultiLineComment (char c) {
+    return c == '~';
+}
+
+bool Lexer::isComment (char c) {
+    return isSingleLineComment(c) || isMultiLineComment(c);
+}
+
 bool Lexer::isOperator (char ch) {
     return ch == '=' || ch == '+' || ch == '-' || ch == '/' || ch == '*';
 }
 
 bool Lexer::isPunctuation (char ch) {
     return ch == ';' || ch == '(' || ch == ')';
+}
+
+void Lexer::skipComment () {
+    char currentChar = input[position];
+    if (isMultiLineComment(currentChar)) {
+        position++;
+        currentChar = input[position];
+        while (position < input.size() && isMultiLineComment(currentChar)) {
+            position++;
+            currentChar = input[position];
+        }
+        position++;
+    }
+    else {
+        position++;
+        currentChar = input[position];
+        while (position < input.size() && currentChar != '\n') {
+            position++;
+            currentChar = input[position];
+        }
+        position++;
+    }
 }
 
 Token Lexer::tokenizeIdentifierOrKeyword () {

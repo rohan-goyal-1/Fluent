@@ -1,4 +1,4 @@
-#include "parser.hpp"
+#include "../include/parser.hpp"
 
 Parser::Parser (std::vector<Token> &tokens) {
     this->tokens = tokens;
@@ -70,10 +70,10 @@ std::shared_ptr<ASTNode> Parser::parseDeclaration () {
 
     declaration->children.push_back(parseExpression());
     if (!match(TokenType::Punctuation) || previous().value != ";") {
-        std::cout << "______\n";
-        std::cout << previous().value << "\n";
-        std::cout << astNames[declaration->children[0]->type] + " " + declaration->children[0]->value + "\n";
-        std::cout << astNames[declaration->type] + " " + declaration->value + "\n";
+        // std::cout << "______\n";
+        // std::cout << previous().value << "\n";
+        // std::cout << astNames[declaration->children[0]->type] + " " + declaration->children[0]->value + "\n";
+        // std::cout << astNames[declaration->type] + " " + declaration->value + "\n";
         throw std::runtime_error("Expected ';' after expression");
     }
 
@@ -109,8 +109,8 @@ std::shared_ptr<ASTNode> Parser::parseTerm () {
         auto binaryExpr = std::make_shared<ASTNode>(ASTNodeType::BinaryOperation, previous().value);
         binaryExpr->children.push_back(left);
         binaryExpr->children.push_back(parsePrimary());
-        std::cout << astNames[left->type] + " " + left->value + "\n";
-        std::cout << astNames[binaryExpr->children[1]->type] + " " + binaryExpr->children[1]->value + "\n";
+        // std::cout << astNames[left->type] + " " + left->value + "\n";
+        // std::cout << astNames[binaryExpr->children[1]->type] + " " + binaryExpr->children[1]->value + "\n";
         left = binaryExpr;
     }
     return left;

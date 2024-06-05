@@ -1,5 +1,5 @@
-#include "interpreter.hpp"
-#include "ast_node.hpp"
+#include "../include/interpreter.hpp"
+#include "../include/ast_node.hpp"
 
 Interpreter::Interpreter (std::string lines) {
     this->lines = lines;
@@ -28,6 +28,7 @@ void Interpreter::interpret () {
     printAST(ast, 0);
     std::cout << '\n';
 
+    std::cout << "Output: \n";
     executeProgram(ast);
 } 
 

@@ -1,0 +1,18 @@
+#!/bin/bash
+
+EXE_PATH="./bin/main"
+
+# Check if the executable exists in the build directory
+if [ ! -f "$EXE_PATH" ]; then
+  echo "Please make sure you have built the project before running it: ./build"
+  exit 1
+fi
+
+# Check if the first argument is provided
+if [ -z "$1" ]; then
+  echo "Usage: fluent <filename>"
+  exit 1
+fi
+
+# Execute the interpreter or compiler with the provided file
+"$EXE_PATH" "$1"

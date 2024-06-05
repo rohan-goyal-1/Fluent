@@ -23,4 +23,9 @@ private:
     Token tokenizeNumber();
     Token tokenizeOperator();
     Token tokenizePunctuation();
+
+    bool isComment(char ch);
+    bool isSingleLineComment(char ch);
+    bool isMultiLineComment(char ch);
+    void skipComment();
 };
