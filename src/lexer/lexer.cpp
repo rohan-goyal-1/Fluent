@@ -1,4 +1,4 @@
-#include "../include/lexer.hpp"
+#include "../../include/lexer.hpp"
 
 Lexer::Lexer (std::string &input) { 
     this->input = input;

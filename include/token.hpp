@@ -16,8 +16,6 @@ enum class TokenType {
     Else
 };
 
-extern std::map<TokenType, std::string> tokenNames;
-
 struct Token {
     TokenType type;
     std::string value;

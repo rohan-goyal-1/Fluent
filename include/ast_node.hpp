@@ -17,8 +17,6 @@ enum class ASTNodeType {
     Conditional
 };
 
-extern std::map<ASTNodeType, std::string> astNames;
-
 struct ASTNode {
     ASTNodeType type;
     std::string value;

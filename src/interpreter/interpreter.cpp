@@ -1,4 +1,4 @@
-#include "../include/interpreter.hpp"
+#include "../../include/interpreter.hpp"
 
 Interpreter::Interpreter (std::string lines) {
     this->lines = lines;
